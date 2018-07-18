@@ -1,6 +1,21 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
+import { AndroidBackHandler } from 'react-navigation-backhandler';
+
+class RootScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 30 }}>RootScreen</Text>
+        <Button
+          onPress={() => this.props.navigation.navigate('ModalRootStack')}
+          title="ModalRootStack"
+        />
+      </View>
+    );
+  }
+}
 
 class HomeScreen extends React.Component {
   render() {
@@ -10,6 +25,10 @@ class HomeScreen extends React.Component {
         <Button
           title="Go to Details"
           onPress={() => this.props.navigation.navigate('Details')}
+        />
+        <Button
+          title="Go back"
+          onPress={() => this.props.navigation.goBack()}
         />
         <Button
           onPress={() =>  this.props.navigation.navigate('MyModal')}
@@ -23,13 +42,15 @@ class HomeScreen extends React.Component {
 class ModalScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
-        <Button
-          onPress={() => this.props.navigation.goBack()}
-          title="Dismiss"
-        />
-      </View>
+      <AndroidBackHandler onBackPress={() => true}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+          <Button
+            onPress={() => this.props.navigation.goBack()}
+            title="Dismiss"
+          />
+        </View>
+      </AndroidBackHandler>
     );
   }
 }
@@ -74,7 +95,7 @@ const MainStack = createStackNavigator(
   }
 );
 
-const RootStack = createStackNavigator(
+const ModalRootStack = createStackNavigator(
   {
     Main: {
       screen: MainStack,
@@ -88,6 +109,17 @@ const RootStack = createStackNavigator(
   },
   {
     mode: 'modal',
+    headerMode: 'none',
+  }
+);
+
+const RootStack = createStackNavigator(
+  {
+    RootScreen: RootScreen,
+    ModalRootStack: ModalRootStack,
+  },
+  {
+    initialRouteName: 'RootScreen',
     headerMode: 'none',
   }
 );
