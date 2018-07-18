@@ -11,6 +11,24 @@ class HomeScreen extends React.Component {
           title="Go to Details"
           onPress={() => this.props.navigation.navigate('Details')}
         />
+        <Button
+          onPress={() =>  this.props.navigation.navigate('MyModal')}
+          title="Modal"
+        />
+      </View>
+    );
+  }
+}
+
+class ModalScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+        <Button
+          onPress={() => this.props.navigation.goBack()}
+          title="Dismiss"
+        />
       </View>
     );
   }
@@ -33,18 +51,44 @@ class DetailsScreen extends React.Component {
           title="Go back"
           onPress={() => this.props.navigation.goBack()}
         />
+        <Button
+          onPress={() =>  this.props.navigation.navigate('MyModal')}
+          title="Modal"
+        />
       </View>
     );
   }
 }
 
-const RootStack = createStackNavigator(
+const MainStack = createStackNavigator(
   {
-    Home: HomeScreen,
-    Details: DetailsScreen,
+    Home: {
+      screen: HomeScreen,
+    },
+    Details: {
+      screen: DetailsScreen,
+    },
   },
   {
     initialRouteName: 'Home',
+  }
+);
+
+const RootStack = createStackNavigator(
+  {
+    Main: {
+      screen: MainStack,
+    },
+    MyModal: {
+      screen: ModalScreen,
+      navigationOptions: () => ({
+        gesturesEnabled: false,
+      }),
+    },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
   }
 );
 
