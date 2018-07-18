@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, View, Text, Animated, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import { AndroidBackHandler } from 'react-navigation-backhandler';
 
@@ -110,6 +110,13 @@ const ModalRootStack = createStackNavigator(
   {
     mode: 'modal',
     headerMode: 'none',
+    transitionConfig : () => ({
+      transitionSpec: {
+        duration: 0,
+        timing: Animated.timing,
+        easing: Easing.step0,
+      },
+    }),
   }
 );
 
