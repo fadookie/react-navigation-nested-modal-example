@@ -3,6 +3,7 @@ import { Button, View, Text, Animated, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import StyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
+import getSceneIndicesForInterpolationInputRange from 'react-navigation/src/utils/getSceneIndicesForInterpolationInputRange';
 
 import ModalScreen from './ModalScreen';
 
@@ -25,24 +26,8 @@ function forVertical(props) {
 }
 
 function forModal(props) {
-  const { layout, position, scene } = props;
-
-  // if (!layout.isMeasured) {
-  //   return forInitial(props);
-  // }
-  const interpolate = getSceneIndicesForInterpolationInputRange(props);
-
-  if (!interpolate) return { opacity: 0 };
-
-  const { first, last } = interpolate;
-  const index = scene.index;
-  const opacity = position.interpolate({
-    inputRange: [first, index, last],
-    outputRange: [0, 1, 1],
-  });
-
   return {
-    opacity,
+    transform: [{ translateX: 0 }, { translateY: 0 }]
   };
 }
 
@@ -155,7 +140,7 @@ class DetailsScreen extends React.Component {
           onPress={() => this.props.navigation.goBack()}
         />
         <Button
-          onPress={() =>  this.props.navigation.navigate('MyModal')}
+          onPress={() =>  this.props.navigation.navigate('MyModal', { renderChildren: modalContentA })}
           title="Modal"
         />
       </View>
@@ -198,6 +183,7 @@ const ModalRootStack = createStackNavigator(
     },
     // transitionConfig: () => ({ screenInterpolator: StyleInterpolator.forFade })
     transitionConfig : () => ({
+      screenInterpolator: forModal,
       transitionSpec: {
         duration: 0,
         timing: Animated.timing,
