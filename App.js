@@ -60,6 +60,34 @@ class RootScreen extends React.Component {
   }
 }
 
+const modalContentA = (onComplete) => (
+  <View style={{ flex: 1 }}>
+    <View style={{ flex: 2, backgroundColor: 'transparent', }} />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green', }}>
+      <Text style={{ fontSize: 30 }}>This is a modal A!</Text>
+      <Button
+        onPress={onComplete.bind(this)}
+        title="Dismiss"
+      />
+    </View>
+    <View style={{ flex: 2, backgroundColor: 'transparent', }} />
+  </View>
+);
+
+const modalContentB = (onComplete) => (
+  <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+    <View style={{ flex: 2, backgroundColor: 'transparent', }} />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'blue', }}>
+      <Text style={{ fontSize: 30 }}>This is a modal B!</Text>
+      <Button
+        onPress={onComplete.bind(this)}
+        title="Dismiss"
+      />
+    </View>
+    <View style={{ flex: 2, backgroundColor: 'transparent', }} />
+  </View>
+);
+
 class HomeScreen extends React.Component {
   render() {
     return (
@@ -74,8 +102,12 @@ class HomeScreen extends React.Component {
           onPress={() => this.props.navigation.goBack()}
         />
         <Button
-          onPress={() =>  this.props.navigation.navigate('MyModal')}
-          title="Modal"
+          onPress={() =>  this.props.navigation.navigate('MyModal', { renderChildren: modalContentA })}
+          title="Modal A"
+        />
+        <Button
+          onPress={() =>  this.props.navigation.navigate('MyModal', { renderChildren: modalContentB })}
+          title="Modal B"
         />
       </View>
     );
@@ -140,14 +172,14 @@ const ModalRootStack = createStackNavigator(
     cardStyle: {
       backgroundColor: 'transparent',//'rgba(0, 0, 0, 0.8)',
     },
-    transitionConfig: () => ({ screenInterpolator: StyleInterpolator.forFade })
-    // transitionConfig : () => (
-    //   transitionSpec: {
-    //     duration: 0,
-    //     timing: Animated.timing,
-    //     easing: Easing.step0,
-    //   },
-    // }),
+    // transitionConfig: () => ({ screenInterpolator: StyleInterpolator.forFade })
+    transitionConfig : () => ({
+      transitionSpec: {
+        duration: 0,
+        timing: Animated.timing,
+        easing: Easing.step0,
+      },
+    }),
   }
 );
 

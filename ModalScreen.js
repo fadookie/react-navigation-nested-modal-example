@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, View, Text, Animated, Easing } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
 import { AndroidBackHandler } from 'react-navigation-backhandler';
+import { withMappedNavigationProps } from 'react-navigation-props-mapper';
 
 class ModalScreen extends React.Component {
   constructor() {
@@ -24,24 +25,22 @@ class ModalScreen extends React.Component {
   //   );
   // }
 
+  onComplete() {
+    this.props.navigation.goBack();
+  }
+
   render() {
-    const textColor = this.props.isFocused ? 'red' : 'black';
+    // const textColor = this.props.isFocused ? 'red' : 'black';
+    // const backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    const backgroundColor = 'transparent';
     return (
       <AndroidBackHandler onBackPress={() => true}>
-        <View style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.8)', }}>
-          <View style={{ flex: 2, backgroundColor: 'transparent', }} />
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green', }}>
-            <Text style={{ fontSize: 30, color: textColor }}>This is a modal!</Text>
-            <Button
-              onPress={() => this.props.navigation.goBack()}
-              title="Dismiss"
-            />
-          </View>
-          <View style={{ flex: 2, backgroundColor: 'transparent', }} />
+        <View style={{ flex: 1, backgroundColor, }}>
+          {this.props.renderChildren(this.onComplete.bind(this))}
         </View>
       </AndroidBackHandler>
     );
   }
 }
 
-export default withNavigationFocus(ModalScreen);
+export default withMappedNavigationProps()(withNavigationFocus(ModalScreen));
