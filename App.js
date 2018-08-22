@@ -3,6 +3,7 @@ import { Button, View, Text, Animated, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import StyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
+
 import ModalScreen from './ModalScreen';
 
 // create custom transitioner without the opacity animation, ie. for iOS
@@ -20,6 +21,28 @@ function forVertical(props) {
 
   return {
     transform: [{ translateX }, { translateY }]
+  };
+}
+
+function forModal(props) {
+  const { layout, position, scene } = props;
+
+  // if (!layout.isMeasured) {
+  //   return forInitial(props);
+  // }
+  const interpolate = getSceneIndicesForInterpolationInputRange(props);
+
+  if (!interpolate) return { opacity: 0 };
+
+  const { first, last } = interpolate;
+  const index = scene.index;
+  const opacity = position.interpolate({
+    inputRange: [first, index, last],
+    outputRange: [0, 1, 1],
+  });
+
+  return {
+    opacity,
   };
 }
 
@@ -171,6 +194,7 @@ const ModalRootStack = createStackNavigator(
     headerMode: 'none',
     cardStyle: {
       backgroundColor: 'transparent',//'rgba(0, 0, 0, 0.8)',
+      opacity: 1,
     },
     // transitionConfig: () => ({ screenInterpolator: StyleInterpolator.forFade })
     transitionConfig : () => ({
@@ -179,6 +203,9 @@ const ModalRootStack = createStackNavigator(
         timing: Animated.timing,
         easing: Easing.step0,
       },
+      containerStyle: {
+        backgroundColor: 'transparent',
+      }
     }),
   }
 );
