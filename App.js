@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, Text, Animated, Easing } from 'react-native';
+import { Button, View, Text, Animated, Easing, StatusBar } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import StyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator';
@@ -58,6 +58,7 @@ class RootScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <StatusBar hidden={true}/>
         <Text style={{ fontSize: 30 }}>RootScreen</Text>
         <Button
           onPress={() => this.props.navigation.navigate('ModalRootStack')}
@@ -70,7 +71,7 @@ class RootScreen extends React.Component {
 
 const modalContentA = (onComplete) => (
   <View style={{ flex: 1 }}>
-    <View style={{ flex: 2, backgroundColor: 'transparent', }} />
+    <View style={{ flex: 2, backgroundColor: 'rgba(0, 0, 0, 0.8)', }} />
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'green', }}>
       <Text style={{ fontSize: 30 }}>This is a modal A!</Text>
       <Button
@@ -78,7 +79,6 @@ const modalContentA = (onComplete) => (
         title="Dismiss"
       />
     </View>
-    <View style={{ flex: 2, backgroundColor: 'transparent', }} />
   </View>
 );
 
@@ -100,6 +100,7 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <StatusBar hidden={true}/>
         <Text>Home Screen</Text>
         <Button
           title="Go to Details"
@@ -126,6 +127,7 @@ class DetailsScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <StatusBar hidden={true}/>
         <Text>Details Screen</Text>
         <Button
           title="Go to Details... again"
