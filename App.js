@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 class HomeScreen extends React.Component {
   render() {
@@ -38,13 +38,33 @@ class DetailsScreen extends React.Component {
   }
 }
 
-const RootStack = createStackNavigator(
+const Tab2Screen = (props) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Tab 2</Text>
+    <Button
+      title="Go to Details"
+      onPress={() => props.navigation.navigate('Details')}
+    />
+  </View>
+);
+
+const TabNavigator = createBottomTabNavigator(
   {
     Home: HomeScreen,
-    Details: DetailsScreen,
+    Tab2: Tab2Screen,
   },
   {
     initialRouteName: 'Home',
+  }
+);
+
+const RootStack = createStackNavigator(
+  {
+    TabNavigator,
+    Details: DetailsScreen,
+  },
+  {
+    initialRouteName: 'TabNavigator',
   }
 );
 
