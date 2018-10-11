@@ -11,6 +11,23 @@ class HomeScreen extends React.Component {
           title="Go to Details"
           onPress={() => this.props.navigation.navigate('Details')}
         />
+        <Button
+          title="Go to Other"
+          onPress={() => this.props.navigation.navigate('Other')}
+        />
+
+        <Button
+          title="Go to Other 2"
+          onPress={() => this.props.navigation.navigate('Other2')}
+        />
+        <Button
+          title = "Other Deeplink"
+          onPress={() => {
+            const pathAction = RootStack.router.getActionForPathAndParams('details/other', undefined);
+            console.log('DEEPLINK:', pathAction);
+            this.props.navigation.dispatch(pathAction);
+          }}
+        />
       </View>
     );
   }
@@ -30,6 +47,10 @@ class DetailsScreen extends React.Component {
           onPress={() => this.props.navigation.navigate('Home')}
         />
         <Button
+          title="Go to Other"
+          onPress={() => this.props.navigation.navigate('Other')}
+        />
+        <Button
           title="Go back"
           onPress={() => this.props.navigation.goBack()}
         />
@@ -38,10 +59,47 @@ class DetailsScreen extends React.Component {
   }
 }
 
+const OtherScreen = (props) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Other Screen</Text>
+    <Button
+      title="Go back"
+      onPress={() => props.navigation.goBack()}
+    />
+  </View>
+);
+
+const OtherScreen2 = (props) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Other Screen 2</Text>
+    <Button
+      title="Go back"
+      onPress={() => props.navigation.goBack()}
+    />
+  </View>
+);
+
+const DetailsFlow = createStackNavigator(
+  {
+    Details: DetailsScreen,
+    Other: {
+      screen: OtherScreen,
+      path: 'other',
+    },
+    Other2: OtherScreen2,
+  },
+  {
+    initialRouteName: 'Details',
+  }
+);
+
 const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Details: DetailsScreen,
+    DetailsFlow: {
+      screen: DetailsFlow,
+      path: 'details',
+    },
   },
   {
     initialRouteName: 'Home',
